@@ -2,5 +2,12 @@
 	"name": "Clicknord",
 	"description": "Versiunea bună a Clicksud!",
 	"version": "1.0.0",
-	"manifest_version": 3
+	"manifest_version": 3,
+
+	"action": {},
+	"background": {
+		"service_worker": "background.js"
+	},
+	"host_permissions": ["https://www.clicksud.org/"],
+	"permissions": ["scripting"]
 }
