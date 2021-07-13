@@ -4,7 +4,7 @@ function fix() {
 	if (iframe) {
 		const url = iframe.src;
 
-		window.open(url, '_blank');
+		window.location = url;
 	} else {
 		alert('Nu a fost găsit nici un video pe pagina curentă!');
 	}
