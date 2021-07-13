@@ -1,9 +1,13 @@
 function fix() {
-	const
-		iframe = document.querySelector('iframe[src*="ok.ru"]'),
-		url = iframe.src;
+	const iframe = document.querySelector('iframe[src*="ok.ru"]');
 
-	window.open(url, '_blank');
+	if (iframe) {
+		const url = iframe.src;
+
+		window.open(url, '_blank');
+	} else {
+		alert('Nu a fost găsit nici un video pe pagina curentă!');
+	}
 }
 
 chrome.action.onClicked.addListener((tab) => {
