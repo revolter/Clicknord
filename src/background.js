@@ -1,4 +1,4 @@
-function fix() {
+function openOkRuVideo() {
 	const iframe = document.querySelector('iframe[src*="ok.ru"]');
 
 	if (iframe) {
@@ -15,6 +15,6 @@ chrome.action.onClicked.addListener((tab) => {
 		target: {
 			tabId: tab.id
 		},
-		function: fix
+		function: openOkRuVideo
 	});
 });
