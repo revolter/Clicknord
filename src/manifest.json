@@ -23,6 +23,14 @@
 	"background": {
 		"service_worker": "background.js"
 	},
+	"content_scripts": [{
+		"matches": [
+			"https://www.clicksud.org/*"
+		],
+		"js": [
+			"content.js"
+		]
+	}],
 	"host_permissions": ["https://www.clicksud.org/"],
 	"permissions": ["scripting"]
 }
