@@ -3,10 +3,18 @@ function removeNode(node) {
 }
 
 function main() {
-	const scripts = document.getElementsByTagName('script');
+	const
+		domain = 'clicksud.org',
 
-	Array.from(scripts).forEach((script) => {
-		removeNode(script);
+		scripts = Array.from(document.getElementsByTagName('script')),
+		anchors = Array.from(document.getElementsByTagName('a')).filter((anchor) => {
+			return !anchor.hostname.includes(domain);
+		}),
+
+		craps = scripts.concat(anchors);
+
+	craps.forEach((crap) => {
+		removeNode(crap);
 	});
 
 	new MutationObserver((mutations) => {
@@ -14,9 +22,31 @@ function main() {
 			mutation.addedNodes.forEach((node) => {
 				const tagName = node.tagName;
 
-				if (tagName && tagName.toLowerCase() === 'script') {
-					removeNode(node);
+				if (tagName == null) {
+					return;
 				}
+
+				switch (tagName.toLowerCase()) {
+					case 'a': {
+						if (node.hostname.includes(domain)) {
+							// Internal links shouldn't be removed.
+
+							return;
+						}
+
+						break;
+					}
+					case 'script': {
+						// All `script`s need to be removed.
+
+						break;
+					}
+					default: {
+						return;
+					}
+				}
+
+				removeNode(node);
 			});
 		});
 	}).observe(document, {
