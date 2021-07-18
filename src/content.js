@@ -23,11 +23,16 @@ function main() {
 			}
 
 			return false;
-		}
+		},
+
+		shouldScriptBeRemoved = (node) => {
+			// All `script`s should be removed.`
+			return true;
+		},
 
 		anchors = Array.from(document.getElementsByTagName('a')).filter(shouldAnchorBeRemoved),
 		iframes = Array.from(document.getElementsByTagName('iframe')).filter(shouldIFrameBeRemoved),
-		scripts = Array.from(document.getElementsByTagName('script')),
+		scripts = Array.from(document.getElementsByTagName('script')).filter(shouldScriptBeRemoved),
 
 		craps = anchors.concat(iframes, scripts);
 
@@ -59,7 +64,9 @@ function main() {
 							break;
 						}
 						case 'script': {
-							// All `script`s need to be removed.
+							if (!shouldScriptBeRemoved(testNode)) {
+								return;
+							}
 
 							break;
 						}
