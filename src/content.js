@@ -1,7 +1,3 @@
-function removeNode(node) {
-	node.parentNode.removeChild(node);
-}
-
 function main() {
 	const
 		domain = 'clicksud.org',
@@ -14,7 +10,7 @@ function main() {
 		craps = scripts.concat(anchors);
 
 	craps.forEach((crap) => {
-		removeNode(crap);
+		crap.remove();
 	});
 
 	new MutationObserver((mutations) => {
@@ -46,7 +42,7 @@ function main() {
 					}
 				}
 
-				removeNode(node);
+				node.remove();
 			});
 		});
 	}).observe(document, {
