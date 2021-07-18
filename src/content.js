@@ -1,6 +1,6 @@
 function main() {
 	const
-		domain = 'clicksud.org',
+		domain = window.location.hostname.replace('www.', ''),
 
 		shouldAnchorBeRemoved = (node) => {
 			if (!node.hostname.includes(domain)) {

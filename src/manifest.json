@@ -28,7 +28,15 @@
 		"js": [
 			"content.js"
 		]
+	}, {
+		"matches": [
+			"https://hqq.tv/*"
+		],
+		"all_frames": true,
+		"js": [
+			"content.js"
+		]
 	}],
-	"host_permissions": ["https://www.clicksud.org/"],
+	"host_permissions": ["https://www.clicksud.org/", "https://hqq.tv/"],
 	"permissions": ["scripting"]
 }
