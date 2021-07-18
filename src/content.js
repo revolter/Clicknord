@@ -27,6 +27,19 @@ function main() {
 				node.remove();
 			}),
 
+			new RemovalsMap('div', (node) => {
+				if (parseInt(node.style.zIndex, 10) > 100) {
+					// `div`s with big `z-index` might be ads, so should be
+					// removed.
+					return true;
+				}
+
+				return false;
+			}, (node) => {
+				node.style.display = 'none';
+				node.style.pointerEvents = 'none';
+			}),
+
 			new RemovalsMap('iframe', (node) => {
 				if (node.getAttribute('src') === null) {
 					// `iframe`s without sources should be removed.
