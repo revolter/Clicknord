@@ -16,10 +16,20 @@ function main() {
 			return false;
 		},
 
+		shouldIFrameBeRemoved = (node) => {
+			if (node.getAttribute('src') === null) {
+				// `iframe`s without sources should be removed.
+				return true;
+			}
+
+			return false;
+		}
+
 		anchors = Array.from(document.getElementsByTagName('a')).filter(shouldAnchorBeRemoved),
+		iframes = Array.from(document.getElementsByTagName('iframe')).filter(shouldIFrameBeRemoved),
 		scripts = Array.from(document.getElementsByTagName('script')),
 
-		craps = anchors.concat(scripts);
+		craps = anchors.concat(iframes, scripts);
 
 	craps.forEach((crap) => {
 		crap.remove();
@@ -41,6 +51,13 @@ function main() {
 
 							break;
 						}
+						case 'iframe': {
+							if (!shouldIFrameBeRemoved(testNode)) {
+								return;
+							}
+
+							break;
+						}
 						case 'script': {
 							// All `script`s need to be removed.
 
@@ -56,6 +73,7 @@ function main() {
 
 				removeIfNeeded(node);
 				Array.from(node.getElementsByTagName('a')).forEach(removeIfNeeded);
+				Array.from(node.getElementsByTagName('iframe')).forEach(removeIfNeeded);
 				Array.from(node.getElementsByTagName('script')).forEach(removeIfNeeded);
 			});
 		});
