@@ -2,9 +2,10 @@ function openHqqTVVideo() {
 	const
 		hash = '#clicknord',
 
-		iframe = document.querySelector('iframe[src*="hqq.tv"]');
+		iframe = document.querySelector('iframe[src*="hqq.tv"]'),
+		isVideoAlreadyOpened = document.body.firstElementChild.tagName.toLowerCase() === 'iframe';
 
-	if (iframe === null || window.location.href.endsWith(hash)) {
+	if (iframe === null || isVideoAlreadyOpened) {
 		alert('Nu a fost găsit server-ul I.');
 
 		return;
@@ -24,7 +25,9 @@ function openHqqTVVideo() {
 		}
 	});
 
-	window.history.pushState(null, null, hash);
+	if (!window.location.href.endsWith(hash)) {
+		window.history.pushState(null, null, hash);
+	}
 }
 
 function openOkRuVideo() {
