@@ -57,22 +57,22 @@ function main() {
 					currentWindow: true
 				});
 
-			let func = null;
+			let openFunction = null;
 
 			switch (button) {
 				case serverI: {
-					func = openHqqTVVideo;
+					openFunction = openHqqTVVideo;
 
 					break;
 				}
 				case serverII: {
-					func = openOkRuVideo;
+					openFunction = openOkRuVideo;
 
 					break;
 				}
 			}
 
-			if (func === null) {
+			if (openFunction === null) {
 				alert('A fost întâmpinată o problemă.');
 
 				return;
@@ -82,7 +82,7 @@ function main() {
 				target: {
 					tabId: tab.id
 				},
-				function: func
+				function: openFunction
 			});
 		};
 
