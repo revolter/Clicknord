@@ -30,11 +30,21 @@ function main() {
 			return true;
 		},
 
-		anchors = Array.from(document.getElementsByTagName('a')).filter(shouldAnchorBeRemoved),
-		iframes = Array.from(document.getElementsByTagName('iframe')).filter(shouldIFrameBeRemoved),
-		scripts = Array.from(document.getElementsByTagName('script')).filter(shouldScriptBeRemoved),
+		removalsMap = new Map([
+			['a', shouldAnchorBeRemoved],
+			['iframe', shouldIFrameBeRemoved],
+			['script', shouldScriptBeRemoved]
+		]),
 
-		craps = anchors.concat(iframes, scripts);
+		craps = Array
+			.from(removalsMap.entries())
+			.flatMap((entry) => {
+				return entry.reduce((tagName, filter) => {
+					const nodes = Array.from(document.getElementsByTagName(tagName));
+
+					return nodes.filter(filter);
+				});
+			});
 
 	craps.forEach((crap) => {
 		crap.remove();
