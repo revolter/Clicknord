@@ -1,9 +1,17 @@
+class RemovalsMap {
+	constructor(tagName, shouldBeRemovedFunction, removeFunction) {
+		this.tagName = tagName;
+		this.shouldBeRemovedFunction = shouldBeRemovedFunction;
+		this.removeFunction = removeFunction;
+	}
+}
+
 function main() {
 	const
 		domain = window.location.hostname.replace('www.', ''),
 
-		removalsMap = new Map([
-			['a', (node) => {
+		removalsMaps = [
+			new RemovalsMap('a', (node) => {
 				if (node.getAttribute('href') === '#') {
 					// Hash only links should be removed.
 					return true;
@@ -15,35 +23,36 @@ function main() {
 				}
 
 				return false;
-			}],
+			}, (node) => {
+				node.remove();
+			}),
 
-			['iframe', (node) => {
+			new RemovalsMap('iframe', (node) => {
 				if (node.getAttribute('src') === null) {
 					// `iframe`s without sources should be removed.
 					return true;
 				}
 
 				return false;
-			}],
+			}, (node) => {
+				node.remove();
+			}),
 
-			['script', (node) => {
+			new RemovalsMap('script', (node) => {
 				// All `script`s should be removed.`
 				return true;
-			}]
-		]);
+			}, (node) => {
+				node.remove();
+			})
+		];
 
-	Array
-		.from(removalsMap.entries())
-		.flatMap((entry) => {
-			return entry.reduce((tagName, filter) => {
-				const nodes = Array.from(document.getElementsByTagName(tagName));
+	removalsMaps.forEach((removalsMap) => {
+		const nodes = Array.from(document.getElementsByTagName(removalsMap.tagName));
 
-				return nodes.filter(filter);
-			});
-		})
-		.forEach((crap) => {
-			crap.remove();
-		});
+		nodes
+			.filter(removalsMap.shouldBeRemovedFunction)
+			.forEach(removalsMap.removeFunction);
+	});
 
 	new MutationObserver((mutations) => {
 		mutations.forEach((mutation) => {
@@ -52,26 +61,19 @@ function main() {
 					return;
 				}
 
-				const removeIfNeeded = (testNode) => {
-					const
-						tagName = testNode.tagName.toLowerCase(),
-						shouldBeRemoved = removalsMap.get(tagName);
+				removalsMaps.forEach((removalsMap) => {
+					const tagName = removalsMap.tagName;
 
-					if (shouldBeRemoved === undefined) {
-						return;
+					let nodes = Array.from(document.getElementsByTagName(tagName));
+
+					if (node.tagName.toLowerCase() === tagName) {
+						nodes.push(node);
 					}
 
-					if (!shouldBeRemoved(testNode)) {
-						return;
-					}
-
-					testNode.remove();
-				}
-
-				removeIfNeeded(node);
-				Array.from(node.getElementsByTagName('a')).forEach(removeIfNeeded);
-				Array.from(node.getElementsByTagName('iframe')).forEach(removeIfNeeded);
-				Array.from(node.getElementsByTagName('script')).forEach(removeIfNeeded);
+					nodes
+						.filter(removalsMap.shouldBeRemovedFunction)
+						.forEach(removalsMap.removeFunction);
+				});
 			});
 		});
 	}).observe(document, {
