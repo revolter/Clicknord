@@ -2,10 +2,17 @@ function main() {
 	const
 		domain = 'clicksud.org',
 
+		shouldAnchorBeRemoved = (node) => {
+			if (!node.hostname.includes(domain)) {
+				// External links should be removed.
+				return true;
+			}
+
+			return false;
+		},
+
 		scripts = Array.from(document.getElementsByTagName('script')),
-		anchors = Array.from(document.getElementsByTagName('a')).filter((anchor) => {
-			return !anchor.hostname.includes(domain);
-		}),
+		anchors = Array.from(document.getElementsByTagName('a')).filter(shouldAnchorBeRemoved),
 
 		craps = scripts.concat(anchors);
 
@@ -23,9 +30,7 @@ function main() {
 				const removeIfNeeded = (testNode) => {
 					switch (testNode.tagName.toLowerCase()) {
 						case 'a': {
-							if (testNode.hostname.includes(domain)) {
-								// Internal links shouldn't be removed.
-
+							if (!shouldAnchorBeRemoved(testNode)) {
 								return;
 							}
 
