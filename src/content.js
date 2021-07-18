@@ -34,21 +34,20 @@ function main() {
 			['a', shouldAnchorBeRemoved],
 			['iframe', shouldIFrameBeRemoved],
 			['script', shouldScriptBeRemoved]
-		]),
+		]);
 
-		craps = Array
-			.from(removalsMap.entries())
-			.flatMap((entry) => {
-				return entry.reduce((tagName, filter) => {
-					const nodes = Array.from(document.getElementsByTagName(tagName));
+	Array
+		.from(removalsMap.entries())
+		.flatMap((entry) => {
+			return entry.reduce((tagName, filter) => {
+				const nodes = Array.from(document.getElementsByTagName(tagName));
 
-					return nodes.filter(filter);
-				});
+				return nodes.filter(filter);
 			});
-
-	craps.forEach((crap) => {
-		crap.remove();
-	});
+		})
+		.forEach((crap) => {
+			crap.remove();
+		});
 
 	new MutationObserver((mutations) => {
 		mutations.forEach((mutation) => {
