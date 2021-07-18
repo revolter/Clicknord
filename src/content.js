@@ -57,31 +57,16 @@ function main() {
 				}
 
 				const removeIfNeeded = (testNode) => {
-					switch (testNode.tagName.toLowerCase()) {
-						case 'a': {
-							if (!shouldAnchorBeRemoved(testNode)) {
-								return;
-							}
+					const
+						tagName = testNode.tagName.toLowerCase(),
+						shouldBeRemoved = removalsMap.get(tagName);
 
-							break;
-						}
-						case 'iframe': {
-							if (!shouldIFrameBeRemoved(testNode)) {
-								return;
-							}
+					if (shouldBeRemoved === undefined) {
+						return;
+					}
 
-							break;
-						}
-						case 'script': {
-							if (!shouldScriptBeRemoved(testNode)) {
-								return;
-							}
-
-							break;
-						}
-						default: {
-							return;
-						}
+					if (!shouldBeRemoved(testNode)) {
+						return;
 					}
 
 					testNode.remove();
