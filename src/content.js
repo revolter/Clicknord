@@ -59,6 +59,12 @@ function main() {
 			})
 		];
 
+	document.addEventListener('contextmenu', (event) => {
+		event.stopPropagation();
+
+		event.returnValue = true;
+	}, true);
+
 	removalsMaps.forEach((removalsMap) => {
 		const nodes = Array.from(document.getElementsByTagName(removalsMap.tagName));
 
