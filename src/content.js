@@ -11,10 +11,10 @@ function main() {
 			return false;
 		},
 
-		scripts = Array.from(document.getElementsByTagName('script')),
 		anchors = Array.from(document.getElementsByTagName('a')).filter(shouldAnchorBeRemoved),
+		scripts = Array.from(document.getElementsByTagName('script')),
 
-		craps = scripts.concat(anchors);
+		craps = anchors.concat(scripts);
 
 	craps.forEach((crap) => {
 		crap.remove();
