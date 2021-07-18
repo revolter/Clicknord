@@ -3,6 +3,11 @@ function main() {
 		domain = window.location.hostname.replace('www.', ''),
 
 		shouldAnchorBeRemoved = (node) => {
+			if (node.getAttribute('href') === '#') {
+				// Hash only links should be removed.
+				return true;
+			}
+
 			if (!node.hostname.includes(domain)) {
 				// External links should be removed.
 				return true;
