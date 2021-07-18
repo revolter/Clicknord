@@ -2,38 +2,34 @@ function main() {
 	const
 		domain = window.location.hostname.replace('www.', ''),
 
-		shouldAnchorBeRemoved = (node) => {
-			if (node.getAttribute('href') === '#') {
-				// Hash only links should be removed.
-				return true;
-			}
-
-			if (!node.hostname.includes(domain)) {
-				// External links should be removed.
-				return true;
-			}
-
-			return false;
-		},
-
-		shouldIFrameBeRemoved = (node) => {
-			if (node.getAttribute('src') === null) {
-				// `iframe`s without sources should be removed.
-				return true;
-			}
-
-			return false;
-		},
-
-		shouldScriptBeRemoved = (node) => {
-			// All `script`s should be removed.`
-			return true;
-		},
-
 		removalsMap = new Map([
-			['a', shouldAnchorBeRemoved],
-			['iframe', shouldIFrameBeRemoved],
-			['script', shouldScriptBeRemoved]
+			['a', (node) => {
+				if (node.getAttribute('href') === '#') {
+					// Hash only links should be removed.
+					return true;
+				}
+
+				if (!node.hostname.includes(domain)) {
+					// External links should be removed.
+					return true;
+				}
+
+				return false;
+			}],
+
+			['iframe', (node) => {
+				if (node.getAttribute('src') === null) {
+					// `iframe`s without sources should be removed.
+					return true;
+				}
+
+				return false;
+			}],
+
+			['script', (node) => {
+				// All `script`s should be removed.`
+				return true;
+			}]
 		]);
 
 	Array
