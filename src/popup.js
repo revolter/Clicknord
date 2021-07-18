@@ -19,7 +19,7 @@ function openHqqTVVideo() {
 
 	document.body.innerHTML = iframe.outerHTML;
 
-	window.addEventListener('hashchange', function (event) {
+	window.addEventListener('hashchange', (event) => {
 		if (event.oldURL.endsWith(hash)) {
 			window.location.reload();
 		}
@@ -49,7 +49,7 @@ function main() {
 		serverI = document.getElementById('server-i'),
 		serverII = document.getElementById('server-ii'),
 
-		onServerClick = async function (event) {
+		onServerClick = async (event) => {
 			const
 				button = event.target,
 				[tab] = await chrome.tabs.query({
