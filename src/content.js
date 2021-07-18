@@ -16,33 +16,37 @@ function main() {
 	new MutationObserver((mutations) => {
 		mutations.forEach((mutation) => {
 			mutation.addedNodes.forEach((node) => {
-				const tagName = node.tagName;
-
-				if (tagName == null) {
+				if (node.tagName == null) {
 					return;
 				}
 
-				switch (tagName.toLowerCase()) {
-					case 'a': {
-						if (node.hostname.includes(domain)) {
-							// Internal links shouldn't be removed.
+				const removeIfNeeded = (testNode) => {
+					switch (testNode.tagName.toLowerCase()) {
+						case 'a': {
+							if (testNode.hostname.includes(domain)) {
+								// Internal links shouldn't be removed.
 
+								return;
+							}
+
+							break;
+						}
+						case 'script': {
+							// All `script`s need to be removed.
+
+							break;
+						}
+						default: {
 							return;
 						}
+					}
 
-						break;
-					}
-					case 'script': {
-						// All `script`s need to be removed.
-
-						break;
-					}
-					default: {
-						return;
-					}
+					testNode.remove();
 				}
 
-				node.remove();
+				removeIfNeeded(node);
+				Array.from(node.getElementsByTagName('a')).forEach(removeIfNeeded);
+				Array.from(node.getElementsByTagName('script')).forEach(removeIfNeeded);
 			});
 		});
 	}).observe(document, {
