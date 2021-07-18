@@ -1,7 +1,8 @@
 function openHqqTVVideo() {
 	const
-		iframe = document.querySelector('iframe[src*="hqq.tv"]'),
-		hash = '#clicknord';
+		hash = '#clicknord',
+
+		iframe = document.querySelector('iframe[src*="hqq.tv"]');
 
 	if (iframe === null || window.location.href.endsWith(hash)) {
 		alert('Nu a fost găsit server-ul I.');
