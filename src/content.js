@@ -48,7 +48,7 @@ function main() {
 
 				return false;
 			}, (node) => {
-				node.remove();
+				node.style.display = 'none';
 			}),
 
 			new RemovalsMap('script', (node) => {
